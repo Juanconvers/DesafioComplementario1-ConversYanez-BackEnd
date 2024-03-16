@@ -1,17 +1,15 @@
 
 import { Router } from "express";
-import { ProductManager } from "../config/ProductManager.js";
+import productModel from "../models/products.js";
+
 
 
 const productsRouter = Router()
 
-const PRODUCTMANAGER = new ProductManager("./src/db/products.json")
-
-
 productsRouter.get('/', async (req, res) => {
     try{
     const { limit } = req.query
-    const productos = await PRODUCTMANAGER.getProducts()
+    const productos = await productModel.find().lean()
     const limite = parseInt(limit)
         if (limite || limite > 0) { 
             const productosLimite = productos.slice(0, limit)
@@ -33,7 +31,7 @@ productsRouter.get('/', async (req, res) => {
 productsRouter.get('/:pid', async (req, res) => {
     try{
         const idProducto = req.params.pid
-        const producto = await PRODUCTMANAGER.getProductsById(idProducto)
+        const producto = await productModel.findById(idProducto)
             if(producto){
                 res.status(200).send(producto)
             }else{
@@ -49,7 +47,7 @@ productsRouter.post('/', async (req, res) => {
     try{
         const producto = req.body
         console.log(producto)
-        const mensaje = await PRODUCTMANAGER.addProduct(producto)
+        const mensaje = await productModel.create(producto)
             if(mensaje == 'Producto creado exitosamente')
                 res.status(200).send(mensaje)
             else{
@@ -63,7 +61,7 @@ productsRouter.put('/:pid', async (req, res) => {
     try {
         const idProducto = req.params.pid
         const updateProduct = req.body
-        const mensaje = await PRODUCTMANAGER.updateProduct(idProducto, updateProduct)
+        const mensaje = await productModel.findByIdAndUpdate
             if (mensaje == 'Producto actualizado exitosamente'){
                 res.status(200).send(mensaje)
             } else {
