@@ -46,7 +46,7 @@ productsRouter.get('/:pid', async (req, res) => {
 productsRouter.post('/', async (req, res) => {
     try{
         const producto = req.body
-        console.log(producto)
+        
         const mensaje = await productModel.create(producto)
             if(mensaje == 'Producto creado exitosamente')
                 res.status(200).send(mensaje)

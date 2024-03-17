@@ -33,8 +33,9 @@ cartRouter.post('/:cid/:pid', async (req, res) => {
         const indice = cart.products.findIndex(product => product.id_prod == productId)
 
         if (indice != -1) {
-            //Consultar Stock para ver cantidades
-            cart.products[indice].quantity = quantity //5 + 5 = 10, asigno 10 a quantity
+            
+            cart.products[indice].quantity = quantity 
+
         } else {
             cart.products.push({ id_prod: productId, quantity: quantity })
         }
